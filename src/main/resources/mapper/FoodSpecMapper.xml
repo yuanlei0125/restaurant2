@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.FoodSpecMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.FoodSpec">
+    <id column="spec_id" jdbcType="INTEGER" property="specId" />
+    <result column="spec_name" jdbcType="VARCHAR" property="specName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    spec_id, spec_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from food_spec
+    where spec_id = #{specId,jdbcType=INTEGER}
+  </select>
+  <select id="findNameById" resultType="java.lang.String" parameterType="java.lang.Integer">
+    SELECT spec_name from food_spec where spec_id =#{specId,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from food_spec
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from food_spec
+    where spec_id = #{specId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.FoodSpec">
+    insert into food_spec (spec_name)
+    values (#{specName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.FoodSpec">
+    insert into food_spec
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="specId != null">
+        spec_id,
+      </if>
+      <if test="specName != null">
+        spec_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="specId != null">
+        #{specId,jdbcType=INTEGER},
+      </if>
+      <if test="specName != null">
+        #{specName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.FoodSpec">
+    update food_spec
+    <set>
+      <if test="specName != null">
+        spec_name = #{specName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where spec_id = #{specId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.FoodSpec">
+    update food_spec
+    set spec_name = #{specName,jdbcType=VARCHAR}
+    where spec_id = #{specId,jdbcType=INTEGER}
+  </update>
+</mapper>

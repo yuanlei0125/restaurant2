@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.JournalMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.Journal">
+    <id column="journal_id" jdbcType="INTEGER" property="journalId" />
+    <result column="journal_time" jdbcType="DATE" property="journalTime" />
+    <result column="grand_id" jdbcType="INTEGER" property="grandId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <association column="grand_id" select="com.j170502.cateringmange.dao.GrandMapper.findGrandName" property="grandName"></association>
+    <association property="userName" select="com.j170502.cateringmange.dao.UserMapper.findUserName" column="user_id"></association>
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.j170502.cateringmange.entity.Journal">
+    <result column="journal_text" jdbcType="LONGVARCHAR" property="journalText" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    journal_id, journal_time, grand_id, user_id
+  </sql>
+  <sql id="Blob_Column_List">
+    journal_text
+  </sql>
+
+  <select id="findAll" parameterType="com.j170502.cateringmange.entity.Journal" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from journal
+  </select>
+  <select id="findBySql" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    SELECT
+    *
+    from journal ${sql}
+
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from journal
+    where journal_id = #{journalId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from journal
+    where journal_id = #{journalId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.Journal">
+    insert into journal (journal_id, journal_time, grand_id, 
+      user_id, journal_text)
+    values (#{journalId,jdbcType=INTEGER}, #{journalTime,jdbcType=DATE}, #{grandId,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER}, #{journalText,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.Journal">
+    insert into journal
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="journalId != null">
+        journal_id,
+      </if>
+      <if test="journalTime != null">
+        journal_time,
+      </if>
+      <if test="grandId != null">
+        grand_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="journalText != null">
+        journal_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="journalId != null">
+        #{journalId,jdbcType=INTEGER},
+      </if>
+      <if test="journalTime != null">
+        #{journalTime,jdbcType=DATE},
+      </if>
+      <if test="grandId != null">
+        #{grandId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="journalText != null">
+        #{journalText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.Journal">
+    update journal
+    <set>
+      <if test="journalTime != null">
+        journal_time = #{journalTime,jdbcType=DATE},
+      </if>
+      <if test="grandId != null">
+        grand_id = #{grandId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="journalText != null">
+        journal_text = #{journalText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where journal_id = #{journalId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.j170502.cateringmange.entity.Journal">
+    update journal
+    set journal_time = #{journalTime,jdbcType=DATE},
+      grand_id = #{grandId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      journal_text = #{journalText,jdbcType=LONGVARCHAR}
+    where journal_id = #{journalId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.Journal">
+    update journal
+    set journal_time = #{journalTime,jdbcType=DATE},
+      grand_id = #{grandId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where journal_id = #{journalId,jdbcType=INTEGER}
+  </update>
+</mapper>

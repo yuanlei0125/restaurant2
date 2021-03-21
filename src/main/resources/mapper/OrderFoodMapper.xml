@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.OrderFoodMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.OrderFood">
+    <id column="order_food_id" jdbcType="INTEGER" property="orderFoodId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="table_id" jdbcType="INTEGER" property="tableId" />
+    <result column="food_id" jdbcType="INTEGER" property="foodId" />
+    <result column="fight_table_id" jdbcType="INTEGER" property="fightTableId" />
+    <result column="food_count" jdbcType="INTEGER" property="foodCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_food_id, order_id, table_id, food_id, fight_table_id, food_count
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_food
+    where order_food_id = #{orderFoodId,jdbcType=INTEGER}
+  </select>
+  <select id="findByOrderPrice" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    sum(o.food_count* f.food_price)
+    from order_food o ,foods  f
+    where o.food_id = f.food_id
+    and order_id = #{orderId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order_food
+    where order_food_id = #{orderFoodId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.OrderFood">
+    insert into order_food (order_food_id, order_id, table_id, 
+      food_id, fight_table_id, food_count
+      )
+    values (#{orderFoodId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{tableId,jdbcType=INTEGER}, 
+      #{foodId,jdbcType=INTEGER}, #{fightTableId,jdbcType=INTEGER}, #{foodCount,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertList" parameterType="java.util.List">
+    insert into order_food
+    (order_id, table_id,
+      food_id, food_count)
+    values
+    <foreach collection="orderFoods" item="item" index="index" separator="," >
+      (#{item.orderId},#{item.tableId},#{item.foodId},#{item.foodCount})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.OrderFood">
+    insert into order_food
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderFoodId != null">
+        order_food_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="tableId != null">
+        table_id,
+      </if>
+      <if test="foodId != null">
+        food_id,
+      </if>
+      <if test="fightTableId != null">
+        fight_table_id,
+      </if>
+      <if test="foodCount != null">
+        food_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderFoodId != null">
+        #{orderFoodId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null">
+        #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="foodId != null">
+        #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="fightTableId != null">
+        #{fightTableId,jdbcType=INTEGER},
+      </if>
+      <if test="foodCount != null">
+        #{foodCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.OrderFood">
+    update order_food
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null">
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="foodId != null">
+        food_id = #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="fightTableId != null">
+        fight_table_id = #{fightTableId,jdbcType=INTEGER},
+      </if>
+      <if test="foodCount != null">
+        food_count = #{foodCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where order_food_id = #{orderFoodId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.OrderFood">
+    update order_food
+    set order_id = #{orderId,jdbcType=INTEGER},
+      table_id = #{tableId,jdbcType=INTEGER},
+      food_id = #{foodId,jdbcType=INTEGER},
+      fight_table_id = #{fightTableId,jdbcType=INTEGER},
+      food_count = #{foodCount,jdbcType=INTEGER}
+    where order_food_id = #{orderFoodId,jdbcType=INTEGER}
+  </update>
+</mapper>

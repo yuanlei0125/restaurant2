@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.OrderStateMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.OrderState">
+    <id column="order_state_id" jdbcType="INTEGER" property="orderStateId" />
+    <result column="state_name" jdbcType="VARCHAR" property="stateName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_state_id, state_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_state
+    where order_state_id = #{orderStateId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order_state
+    where order_state_id = #{orderStateId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.OrderState">
+    insert into order_state (order_state_id, state_name)
+    values (#{orderStateId,jdbcType=INTEGER}, #{stateName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.OrderState">
+    insert into order_state
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderStateId != null">
+        order_state_id,
+      </if>
+      <if test="stateName != null">
+        state_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderStateId != null">
+        #{orderStateId,jdbcType=INTEGER},
+      </if>
+      <if test="stateName != null">
+        #{stateName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.OrderState">
+    update order_state
+    <set>
+      <if test="stateName != null">
+        state_name = #{stateName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_state_id = #{orderStateId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.OrderState">
+    update order_state
+    set state_name = #{stateName,jdbcType=VARCHAR}
+    where order_state_id = #{orderStateId,jdbcType=INTEGER}
+  </update>
+</mapper>

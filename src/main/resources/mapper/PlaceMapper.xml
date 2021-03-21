@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.PlaceMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.Place">
+    <id column="place_id" jdbcType="INTEGER" property="placeId" />
+    <result column="place_name" jdbcType="VARCHAR" property="placeName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    place_id, place_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from place
+    where place_id = #{placeId,jdbcType=INTEGER}
+  </select>
+
+  <select id="findAll" parameterType="com.j170502.cateringmange.entity.Place" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from place
+  </select>
+
+  <select id="findPlaceName"  resultType="java.lang.String">
+    select
+    place_name
+    from place
+    WHERE place_id = #{placeId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from place
+    where place_id = #{placeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.Place">
+    insert into place (place_id, place_name)
+    values (#{placeId,jdbcType=INTEGER}, #{placeName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.Place">
+    insert into place
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="placeId != null">
+        place_id,
+      </if>
+      <if test="placeName != null">
+        place_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="placeId != null">
+        #{placeId,jdbcType=INTEGER},
+      </if>
+      <if test="placeName != null">
+        #{placeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.Place">
+    update place
+    <set>
+      <if test="placeName != null">
+        place_name = #{placeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where place_id = #{placeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.Place">
+    update place
+    set place_name = #{placeName,jdbcType=VARCHAR}
+    where place_id = #{placeId,jdbcType=INTEGER}
+  </update>
+</mapper>

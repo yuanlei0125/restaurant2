@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.PreOrderMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.PreOrder">
+    <id column="pre_order_id" jdbcType="INTEGER" property="preOrderId" />
+    <result column="pre_num" jdbcType="VARCHAR" property="preNum" />
+    <result column="custome" jdbcType="VARCHAR" property="custome" />
+    <result column="custome_tel" jdbcType="VARCHAR" property="customeTel" />
+    <result column="custome_num" jdbcType="INTEGER" property="customeNum" />
+    <result column="pre_order_time" jdbcType="DATE" property="preOrderTime" />
+    <result column="keeptime" jdbcType="INTEGER" property="keeptime" />
+    <result column="deposit" jdbcType="INTEGER" property="deposit" />
+    <result column="pre_state" jdbcType="INTEGER" property="preState" />
+    <result column="tabel_name" jdbcType="VARCHAR" property="tabelName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pre_order_id, pre_num, custome, custome_tel, custome_num, pre_order_time, keeptime, 
+    deposit, pre_state, tabel_name
+  </sql>
+
+    <select id="findByTimeAndState" resultMap="BaseResultMap" >
+        SELECT
+      pre_order_id, pre_num, custome, custome_tel, custome_num, pre_order_time, keeptime,
+      deposit, pre_state, tabel_name
+        FROM pre_order p,(select pre_order_id id, DATE_FORMAT(pre_order_time,'%Y-%m-%d') d from pre_order) t
+       where t.id=p.pre_order_id
+        <if test="preState!=0">
+            and pre_state = #{preState,jdbcType=INTEGER}
+        </if>
+        <if test="preOrderTime!=0">
+            and t.d = #{preOrderTime,jdbcType=VARCHAR}
+        </if>
+        ORDER BY pre_order_time
+    </select>
+
+    <select id="findOrderByTime" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM pre_order order by pre_order_time
+    </select>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM pre_order
+  </select>
+  <select id="findByState" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM pre_order where pre_state = #{preState,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pre_order
+    where pre_order_id = #{preOrderId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pre_order
+    where pre_order_id = #{preOrderId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.PreOrder" useGeneratedKeys="true" keyColumn="pre_order_id" keyProperty="preOrderId">
+    insert into pre_order (pre_num, custome,
+      custome_tel, custome_num, pre_order_time, 
+      keeptime, deposit, pre_state, 
+      tabel_name)
+    values (#{preNum,jdbcType=VARCHAR}, #{custome,jdbcType=VARCHAR},
+      #{customeTel,jdbcType=VARCHAR}, #{customeNum,jdbcType=INTEGER}, #{preOrderTime,jdbcType=DATE}, 
+      #{keeptime,jdbcType=INTEGER}, #{deposit,jdbcType=INTEGER}, #{preState,jdbcType=INTEGER}, 
+      #{tabelName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.PreOrder">
+    insert into pre_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+
+      <if test="preNum != null">
+        pre_num,
+      </if>
+      <if test="custome != null">
+        custome,
+      </if>
+      <if test="customeTel != null">
+        custome_tel,
+      </if>
+      <if test="customeNum != null">
+        custome_num,
+      </if>
+      <if test="preOrderTime != null">
+        pre_order_time,
+      </if>
+      <if test="keeptime != null">
+        keeptime,
+      </if>
+      <if test="deposit != null">
+        deposit,
+      </if>
+      <if test="preState != null">
+        pre_state,
+      </if>
+      <if test="tabelName != null">
+        tabel_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="preNum != null">
+        #{preNum,jdbcType=VARCHAR},
+      </if>
+      <if test="custome != null">
+        #{custome,jdbcType=VARCHAR},
+      </if>
+      <if test="customeTel != null">
+        #{customeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="customeNum != null">
+        #{customeNum,jdbcType=INTEGER},
+      </if>
+      <if test="preOrderTime != null">
+        #{preOrderTime,jdbcType=DATE},
+      </if>
+      <if test="keeptime != null">
+        #{keeptime,jdbcType=INTEGER},
+      </if>
+      <if test="deposit != null">
+        #{deposit,jdbcType=INTEGER},
+      </if>
+      <if test="preState != null">
+        #{preState,jdbcType=INTEGER},
+      </if>
+      <if test="tabelName != null">
+        #{tabelName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.PreOrder">
+    update pre_order
+    <set>
+      <if test="preNum != null">
+        pre_num = #{preNum,jdbcType=VARCHAR},
+      </if>
+      <if test="custome != null">
+        custome = #{custome,jdbcType=VARCHAR},
+      </if>
+      <if test="customeTel != null">
+        custome_tel = #{customeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="customeNum != null">
+        custome_num = #{customeNum,jdbcType=INTEGER},
+      </if>
+      <if test="preOrderTime != null">
+        pre_order_time = #{preOrderTime,jdbcType=DATE},
+      </if>
+      <if test="keeptime != null">
+        keeptime = #{keeptime,jdbcType=INTEGER},
+      </if>
+      <if test="deposit != null">
+        deposit = #{deposit,jdbcType=INTEGER},
+      </if>
+      <if test="preState != null">
+        pre_state = #{preState,jdbcType=INTEGER},
+      </if>
+      <if test="tabelName != null">
+        tabel_name = #{tabelName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pre_order_id = #{preOrderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.PreOrder">
+    update pre_order
+    set pre_num = #{preNum,jdbcType=VARCHAR},
+      custome = #{custome,jdbcType=VARCHAR},
+      custome_tel = #{customeTel,jdbcType=VARCHAR},
+      custome_num = #{customeNum,jdbcType=INTEGER},
+      pre_order_time = #{preOrderTime,jdbcType=DATE},
+      keeptime = #{keeptime,jdbcType=INTEGER},
+      deposit = #{deposit,jdbcType=INTEGER},
+      pre_state = #{preState,jdbcType=INTEGER},
+      tabel_name = #{tabelName,jdbcType=VARCHAR}
+    where pre_order_id = #{preOrderId,jdbcType=INTEGER}
+  </update>
+</mapper>

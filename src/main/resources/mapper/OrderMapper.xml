@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.Order">
+    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="order_type" jdbcType="INTEGER" property="orderType" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
+    <result column="table_id" jdbcType="INTEGER" property="tableId" />
+    <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
+    <result column="order_price" jdbcType="INTEGER" property="orderPrice" />
+    <result column="order_waiter" jdbcType="INTEGER" property="orderWaiter" />
+    <result column="order_cashier" jdbcType="VARCHAR" property="orderCashier" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, create_time, order_type, order_state, table_id, people_num, order_price, 
+    order_waiter, order_cashier, pay_time, order_num, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `order`
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <select id="findByTableId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+     *
+     from
+     `order`
+      where order_id =
+      (select order_id
+      from table_order_info
+      where table_id = #{tableId}
+      order by create_time desc
+      limit 0,1)
+  </select>
+  <select id="findSnackOrder" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from `order` where order_type=3 order by order_id desc limit 0,1;
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `order`
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert"  parameterType="com.j170502.cateringmange.entity.Order">
+    insert into `order` (order_id, create_time, order_type, 
+      order_state, table_id, people_num, 
+      order_price, order_waiter, order_cashier, 
+      pay_time, order_num, remark
+      )
+    values (#{orderId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{orderType,jdbcType=INTEGER}, 
+      #{orderState,jdbcType=INTEGER}, #{tableId,jdbcType=INTEGER}, #{peopleNum,jdbcType=INTEGER}, 
+      #{orderPrice,jdbcType=INTEGER}, #{orderWaiter,jdbcType=INTEGER}, #{orderCashier,jdbcType=VARCHAR}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{orderNum,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective"  parameterType="com.j170502.cateringmange.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
+    insert into `order`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="orderType != null">
+        order_type,
+      </if>
+      <if test="orderState != null">
+        order_state,
+      </if>
+      <if test="tableId != null">
+        table_id,
+      </if>
+      <if test="peopleNum != null">
+        people_num,
+      </if>
+      <if test="orderPrice != null">
+        order_price,
+      </if>
+      <if test="orderWaiter != null">
+        order_waiter,
+      </if>
+      <if test="orderCashier != null">
+        order_cashier,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderType != null">
+        #{orderType,jdbcType=INTEGER},
+      </if>
+      <if test="orderState != null">
+        #{orderState,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null">
+        #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="peopleNum != null">
+        #{peopleNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null">
+        #{orderPrice,jdbcType=INTEGER},
+      </if>
+      <if test="orderWaiter != null">
+        #{orderWaiter,jdbcType=INTEGER},
+      </if>
+      <if test="orderCashier != null">
+        #{orderCashier,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.Order">
+    update `order`
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderType != null">
+        order_type = #{orderType,jdbcType=INTEGER},
+      </if>
+      <if test="orderState != null">
+        order_state = #{orderState,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null">
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="peopleNum != null">
+        people_num = #{peopleNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null">
+        order_price = #{orderPrice,jdbcType=INTEGER},
+      </if>
+      <if test="orderWaiter != null">
+        order_waiter = #{orderWaiter,jdbcType=INTEGER},
+      </if>
+      <if test="orderCashier != null">
+        order_cashier = #{orderCashier,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.Order">
+    update order
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      order_type = #{orderType,jdbcType=INTEGER},
+      order_state = #{orderState,jdbcType=INTEGER},
+      table_id = #{tableId,jdbcType=INTEGER},
+      people_num = #{peopleNum,jdbcType=INTEGER},
+      order_price = #{orderPrice,jdbcType=INTEGER},
+      order_waiter = #{orderWaiter,jdbcType=INTEGER},
+      order_cashier = #{orderCashier,jdbcType=VARCHAR},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      order_num = #{orderNum,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.FoodsMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.Foods">
+    <id column="food_id" jdbcType="INTEGER" property="foodId" />
+    <result column="food_name" jdbcType="VARCHAR" property="foodName" />
+    <result column="food_price" jdbcType="INTEGER" property="foodPrice" />
+    <result column="food_img" jdbcType="VARCHAR" property="foodImg" />
+    <result column="food_type" jdbcType="INTEGER" property="foodType" />
+    <result column="food_state" jdbcType="INTEGER" property="foodState" />
+    <result column="food_flavor" jdbcType="INTEGER" property="foodFlavor" />
+    <result column="food_spec" jdbcType="INTEGER" property="foodSpec" />
+    <result column="food_num" jdbcType="VARCHAR" property="foodNum" />
+    <result column="food_direction" jdbcType="VARCHAR" property="foodDirection" />
+    <result column="food_type" jdbcType="INTEGER" property="foodType" />
+    <result column="food_state" jdbcType="INTEGER" property="foodState" />
+    <result column="food_flavor" jdbcType="INTEGER" property="foodFlavor" />
+    <result column="food_spec" jdbcType="INTEGER" property="foodSpec" />
+    <association property="typeName" column="food_type"
+                 fetchType="eager"  select="com.j170502.cateringmange.dao.FoodTypeMapper.findNameById"/>
+    <association property="stateName" column="food_state"
+                 fetchType="eager"  select="com.j170502.cateringmange.dao.FoodStateMapper.findNameById"/>
+    <association property="flavorName" column="food_flavor"
+                 fetchType="eager"  select="com.j170502.cateringmange.dao.FoodFlavorMapper.findNameById"/>
+    <association property="specName" column="food_spec"
+                 fetchType="eager"  select="com.j170502.cateringmange.dao.FoodSpecMapper.findNameById"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    food_id, food_name, food_price, food_img, food_type, food_state, food_flavor, food_spec,
+    food_num, food_direction
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from foods
+    where food_id = #{foodId,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from foods ${str}
+  </select>
+
+<select id="findFoodByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  SELECT
+  <include refid="Base_Column_List" />
+  from foods where food_name=#{foodName}
+</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from foods
+    where food_id = #{foodId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.Foods">
+    insert into foods (food_name, food_price,
+    food_img, food_type, food_state,
+    food_flavor, food_spec, food_num,
+    food_direction)
+    values (#{foodName,jdbcType=VARCHAR}, #{foodPrice,jdbcType=INTEGER},
+    #{foodImg,jdbcType=VARCHAR}, #{foodType,jdbcType=INTEGER}, #{foodState,jdbcType=INTEGER},
+    #{foodFlavor,jdbcType=INTEGER}, #{foodSpec,jdbcType=INTEGER}, #{foodNum,jdbcType=VARCHAR},
+    #{foodDirection,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.Foods">
+    insert into foods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="foodId != null">
+        food_id,
+      </if>
+      <if test="foodName != null">
+        food_name,
+      </if>
+      <if test="foodPrice != null">
+        food_price,
+      </if>
+      <if test="foodImg != null">
+        food_img,
+      </if>
+      <if test="foodType != null">
+        food_type,
+      </if>
+      <if test="foodState != null">
+        food_state,
+      </if>
+      <if test="foodFlavor != null">
+        food_flavor,
+      </if>
+      <if test="foodSpec != null">
+        food_spec,
+      </if>
+      <if test="foodNum != null">
+        food_num,
+      </if>
+      <if test="foodDirection != null">
+        food_direction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="foodId != null">
+        #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="foodName != null">
+        #{foodName,jdbcType=VARCHAR},
+      </if>
+      <if test="foodPrice != null">
+        #{foodPrice,jdbcType=INTEGER},
+      </if>
+      <if test="foodImg != null">
+        #{foodImg,jdbcType=VARCHAR},
+      </if>
+      <if test="foodType != null">
+        #{foodType,jdbcType=INTEGER},
+      </if>
+      <if test="foodState != null">
+        #{foodState,jdbcType=INTEGER},
+      </if>
+      <if test="foodFlavor != null">
+        #{foodFlavor,jdbcType=INTEGER},
+      </if>
+      <if test="foodSpec != null">
+        #{foodSpec,jdbcType=INTEGER},
+      </if>
+      <if test="foodNum != null">
+        #{foodNum,jdbcType=VARCHAR},
+      </if>
+      <if test="foodDirection != null">
+        #{foodDirection,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.Foods">
+    update foods
+    <set>
+      <if test="foodName != null">
+        food_name = #{foodName,jdbcType=VARCHAR},
+      </if>
+      <if test="foodPrice != null">
+        food_price = #{foodPrice,jdbcType=INTEGER},
+      </if>
+      <if test="foodImg != null">
+        food_img = #{foodImg,jdbcType=VARCHAR},
+      </if>
+      <if test="foodType != null">
+        food_type = #{foodType,jdbcType=INTEGER},
+      </if>
+      <if test="foodState != null">
+        food_state = #{foodState,jdbcType=INTEGER},
+      </if>
+      <if test="foodFlavor != null">
+        food_flavor = #{foodFlavor,jdbcType=INTEGER},
+      </if>
+      <if test="foodSpec != null">
+        food_spec = #{foodSpec,jdbcType=INTEGER},
+      </if>
+      <if test="foodNum != null">
+        food_num = #{foodNum,jdbcType=VARCHAR},
+      </if>
+      <if test="foodDirection != null">
+        food_direction = #{foodDirection,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where food_id = #{foodId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.Foods">
+    update foods
+    set food_name = #{foodName,jdbcType=VARCHAR},
+      food_price = #{foodPrice,jdbcType=INTEGER},
+      food_img = #{foodImg,jdbcType=VARCHAR},
+      food_type = #{foodType,jdbcType=INTEGER},
+      food_state = #{foodState,jdbcType=INTEGER},
+      food_flavor = #{foodFlavor,jdbcType=INTEGER},
+      food_spec = #{foodSpec,jdbcType=INTEGER},
+      food_num = #{foodNum,jdbcType=VARCHAR},
+      food_direction = #{foodDirection,jdbcType=VARCHAR}
+    where food_id = #{foodId,jdbcType=INTEGER}
+  </update>
+  <update id="updateFoodState" parameterType="java.lang.Integer">
+    update foods set food_state=#{foodState,jdbcType=INTEGER} where food_id= #{foodId,jdbcType=INTEGER}
+  </update>
+</mapper>

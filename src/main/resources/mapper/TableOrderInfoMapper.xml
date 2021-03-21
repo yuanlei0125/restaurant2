@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.TableOrderInfoMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.TableOrderInfo">
+    <id column="table_order_id" jdbcType="INTEGER" property="tableOrderId" />
+    <result column="table_id" jdbcType="INTEGER" property="tableId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="num_of_customer" jdbcType="INTEGER" property="numOfCustomer" />
+    <result column="order_food" jdbcType="CHAR" property="orderFood" />
+    <result column="fight_table" jdbcType="CHAR" property="fightTable" />
+  </resultMap>
+  <resultMap id="VOMap" type="com.j170502.cateringmange.entity.OrderNumAndTable">
+    <id column="order_id" jdbcType="INTEGER" property="orderId"/>
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum"/>
+    <result column="table_id" jdbcType="INTEGER" property="tableId"/>
+    <result column="tables_name" jdbcType="VARCHAR" property="tableName"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    table_order_id, table_id, order_id, create_time, remark, num_of_customer, order_food, 
+    fight_table
+  </sql>
+  <select id="findVOByTableId" parameterType="java.lang.Integer" resultMap="VOMap">
+    select
+    order_id,order_num,tb.table_id,tables_name
+    from
+    `order` o,tables tb
+    where o.table_id = tb.table_id
+    and tb.table_id = #{tableId}
+    order by create_time desc
+    limit 0,1
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from table_order_info
+    where table_order_id = #{tableOrderId,jdbcType=INTEGER}
+  </select>
+  <select id="findByTableId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from table_order_info
+    where table_id = #{tableId}
+    order by create_time desc
+    limit 0 ,1
+  </select>
+  <select id="findOrderState" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select
+    order_food
+    from table_order_info where table_id = #{tableId}
+    order by create_time desc limit 0,1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from table_order_info
+    where table_order_id = #{tableOrderId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.TableOrderInfo">
+    insert into table_order_info (table_order_id, table_id, order_id, 
+      create_time, remark, num_of_customer, 
+      order_food, fight_table)
+    values (#{tableOrderId,jdbcType=INTEGER}, #{tableId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{numOfCustomer,jdbcType=INTEGER}, 
+      #{orderFood,jdbcType=CHAR}, #{fightTable,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.TableOrderInfo">
+    insert into table_order_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableOrderId != null">
+        table_order_id,
+      </if>
+      <if test="tableId != null">
+        table_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="numOfCustomer != null">
+        num_of_customer,
+      </if>
+      <if test="orderFood != null">
+        order_food,
+      </if>
+      <if test="fightTable != null">
+        fight_table,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableOrderId != null">
+        #{tableOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null">
+        #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="numOfCustomer != null">
+        #{numOfCustomer,jdbcType=INTEGER},
+      </if>
+      <if test="orderFood != null">
+        #{orderFood,jdbcType=CHAR},
+      </if>
+      <if test="fightTable != null">
+        #{fightTable,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.TableOrderInfo">
+    update table_order_info
+    <set>
+      <if test="tableId != null">
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="numOfCustomer != null">
+        num_of_customer = #{numOfCustomer,jdbcType=INTEGER},
+      </if>
+      <if test="orderFood != null">
+        order_food = #{orderFood,jdbcType=CHAR},
+      </if>
+      <if test="fightTable != null">
+        fight_table = #{fightTable,jdbcType=CHAR},
+      </if>
+    </set>
+    where table_order_id = #{tableOrderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.TableOrderInfo">
+    update table_order_info
+    set table_id = #{tableId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      num_of_customer = #{numOfCustomer,jdbcType=INTEGER},
+      order_food = #{orderFood,jdbcType=CHAR},
+      fight_table = #{fightTable,jdbcType=CHAR}
+    where table_order_id = #{tableOrderId,jdbcType=INTEGER}
+  </update>
+</mapper>

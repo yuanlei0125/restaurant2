@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.FoodFlavorMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.FoodFlavor">
+    <id column="flavor_id" jdbcType="INTEGER" property="flavorId" />
+    <result column="flavor_name" jdbcType="VARCHAR" property="flavorName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flavor_id, flavor_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from food_flavor
+    where flavor_id = #{flavorId,jdbcType=INTEGER}
+  </select>
+  <select id="findNameById" resultType="java.lang.String" parameterType="java.lang.Integer">
+    SELECT flavor_name from food_flavor where flavor_id =#{flavorId,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM food_flavor
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from food_flavor
+    where flavor_id = #{flavorId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.FoodFlavor">
+    insert into food_flavor (flavor_name)
+    values (#{flavorName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.FoodFlavor">
+    insert into food_flavor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flavorId != null">
+        flavor_id,
+      </if>
+      <if test="flavorName != null">
+        flavor_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flavorId != null">
+        #{flavorId,jdbcType=INTEGER},
+      </if>
+      <if test="flavorName != null">
+        #{flavorName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.FoodFlavor">
+    update food_flavor
+    <set>
+      <if test="flavorName != null">
+        flavor_name = #{flavorName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flavor_id = #{flavorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.FoodFlavor">
+    update food_flavor
+    set flavor_name = #{flavorName,jdbcType=VARCHAR}
+    where flavor_id = #{flavorId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j170502.cateringmange.dao.PreOrderFoodMapper">
+  <resultMap id="BaseResultMap" type="com.j170502.cateringmange.entity.PreOrderFood">
+    <id column="pre_order_food_id" jdbcType="INTEGER" property="preOrderFoodId" />
+    <result column="food_id" jdbcType="INTEGER" property="foodId" />
+    <result column="pre_order_id" jdbcType="INTEGER" property="preOrderId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pre_order_food_id, food_id, pre_order_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pre_order_food
+    where pre_order_food_id = #{preOrderFoodId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pre_order_food
+    where pre_order_food_id = #{preOrderFoodId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.j170502.cateringmange.entity.PreOrderFood">
+    insert into pre_order_food (food_id, pre_order_id
+      )
+    values (#{foodId,jdbcType=INTEGER}, #{preOrderId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.j170502.cateringmange.entity.PreOrderFood">
+    insert into pre_order_food
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+
+      <if test="foodId != null">
+        food_id,
+      </if>
+      <if test="preOrderId != null">
+        pre_order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="foodId != null">
+        #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="preOrderId != null">
+        #{preOrderId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.j170502.cateringmange.entity.PreOrderFood">
+    update pre_order_food
+    <set>
+      <if test="foodId != null">
+        food_id = #{foodId,jdbcType=INTEGER},
+      </if>
+      <if test="preOrderId != null">
+        pre_order_id = #{preOrderId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where pre_order_food_id = #{preOrderFoodId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.j170502.cateringmange.entity.PreOrderFood">
+    update pre_order_food
+    set food_id = #{foodId,jdbcType=INTEGER},
+      pre_order_id = #{preOrderId,jdbcType=INTEGER}
+    where pre_order_food_id = #{preOrderFoodId,jdbcType=INTEGER}
+  </update>
+</mapper>
